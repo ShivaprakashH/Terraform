@@ -1,22 +1,7 @@
-variable "subId" {
-    type = list(string)
-}
-
-variable "vpcId" {
-    type = string
-}
-
-variable "counts" {
-  type = number
-  default = 2
-}
-
-variable "cidrBlock" {
-  type = string
-}
-
-variable "natGatewayId" {
-  type = list(string)
+resource "aws_route" "internet_access" {
+  route_table_id         = var.routeTableId
+  destination_cidr_block = var.cidrBlock
+  gateway_id             = var.internetGatewayId
 }
 
 resource "aws_route_table" "private" {

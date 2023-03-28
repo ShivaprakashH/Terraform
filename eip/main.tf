@@ -1,12 +1,3 @@
-variable "counts" {
-  type = number
-  default = 2
-}
-
-variable "subId" {
-  type = list(string)
-}
-
 resource "aws_eip" "gateway" {
   count      = var.counts
   vpc        = true

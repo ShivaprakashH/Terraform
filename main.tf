@@ -1,12 +1,3 @@
-provider "aws" {
-  region = "us-east-1"
-  default_tags {
-    tags = {
-      Name = "architect-demo"
-    }
-  }
-}
-
 module "availabilityZone" {
   source = "./az"
 }
@@ -34,12 +25,6 @@ module "ig" {
   vpcId = module.vpc.vpcId
 }
 
-module "internetAccess" {
-  source = "./internetaccess"
-  routeTableId = module.vpc.routeTableId
-  internetGatewayId = module.ig.igId
-}
-
 module "awsEip" {
   source = "./eip"
   counts      = 2
@@ -54,6 +39,8 @@ module "awsRoute" {
   cidrBlock = "0.0.0.0/0"
   subId = module.privateSubnet.subnetId
   natGatewayId = module.awsEip.natGateId
+  routeTableId = module.vpc.routeTableId
+  internetGatewayId = module.ig.igId
 }
 
 module "awsloadBalancer" {
