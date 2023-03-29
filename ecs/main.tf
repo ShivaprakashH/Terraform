@@ -1,5 +1,4 @@
 
-
 resource "aws_ecs_task_definition" "hello_world" {
   family                   = var.ecsFamilyName
   network_mode             = "awsvpc"
@@ -8,24 +7,22 @@ resource "aws_ecs_task_definition" "hello_world" {
   memory                   = 2048
   task_role_arn = var.iamRoleArns
   execution_role_arn = var.iamRoleArns
-  container_definitions = <<DEFINITION
-[
-  {
-    "image": "844024018158.dkr.ecr.us-east-1.amazonaws.com/demo-repo:latest",
-    "cpu": 1024,
-    "memory": 2048,
-    "name": "hello-world-app",
-    "networkMode": "awsvpc",
-    "portMappings": [
-      {
-        "containerPort": 8081,
-        "hostPort": 8081,
-        "protocol": "tcp"
-      }
-    ]
-  }
-]
-DEFINITION
+  container_definitions = jsonencode([
+    {
+      name      = "hello-world-app"
+      image     = "docker.io/shivaprakashhurukadli/demo-repo:latest"
+      cpu       = 1024
+      memory    = 2048
+      networkMode = "awsvpc"
+      portMappings = [
+        {
+          containerPort = 8081
+          hostPort = 8081
+          protocol = "tcp"
+        }
+      ]
+    }
+  ])
 }
 
 resource "aws_security_group" "hello_world_task" {

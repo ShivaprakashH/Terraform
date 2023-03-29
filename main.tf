@@ -6,6 +6,10 @@ module "vpc" {
   source = "./vpc"
 }
 
+module "docker" {
+  source = "./ecr"
+}
+
 module "publicSubnet" {
   source = "./publicsn"
   vpcId = module.vpc.vpcId
